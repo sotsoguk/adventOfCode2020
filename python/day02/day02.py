@@ -7,7 +7,6 @@ def main():
     day = "02"
     part1, part2 = 0, 0
     starLine = "*" * 19
-    resultString = 
     inputFile = f'../inputs/input{day}.txt'
 
     with open(inputFile) as f:
@@ -31,9 +30,9 @@ def main():
         if bool(password[minOcc-1] == char) ^ bool(password[maxOcc-1] == char):
             part2 += 1
 
-    duration = int((time.time() - start_time) * 1000000)
+    duration = int((time.time() - start_time) * 1000)
     print(
-        f"\n{starLine}\n AoC 2020 - Day {day}\n{starLine}\n\nPart 1:\t\t{part1}\nPart 2:\t\t{part2}\nDuration:\t{duration} ns")
+        f"\n{starLine}\n AoC 2020 - Day {day}\n{starLine}\n\nPart 1:\t\t{part1}\nPart 2:\t\t{part2}\nDuration:\t{duration} ms")
 
 
 if __name__ == "__main__":
