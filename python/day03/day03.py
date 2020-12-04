@@ -5,14 +5,9 @@ import functools
 
 
 def trees_on_slope(slope, grid):
-    pos_x, pos_y, trees = 0, 0, 0
     grid_w, grid_h = len(grid[0]), len(grid)
-    while pos_y < grid_h:
-
-        if grid[pos_y][pos_x] == 1:
-            trees += 1
-        pos_x = (pos_x + slope[0]) % grid_w
-        pos_y += slope[1]
+    trees = sum(grid[i][j] == 1 for i, j in [
+                (i, (i*slope[0]//slope[1]) % grid_w) for i in range(0, grid_h, slope[1])])
     return trees
 
 
