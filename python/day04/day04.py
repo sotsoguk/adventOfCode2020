@@ -62,6 +62,8 @@ def main():
                 k, v = t.split(':')
                 fields[k] = v
     passports.append(fields)
+
+    # part1
     required_1 = {'byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'}
     for p in passports:
         if p.keys() >= required_1:
