@@ -15,28 +15,21 @@ def main():
 
     with open(inputFile) as f:
         lines = f.read().splitlines()
+    lines.append("")
 
     start_time = time.time()
-
     set_1, set_2 = set(), set("abcdefghijklmnopqrstuvwxyz")
-    all_1, all_2 = [], []
 
     # part 1
     for l in lines:
         if l == "":
-            all_1.append(set_1)
-            all_2.append(set_2)
+            part1 += len(set_1)
+            part2 += len(set_2)
             set_1 = set()
             set_2 = set("abcdefghijklmnopqrstuvwxyz")
         else:
             set_2 = set_2.intersection(set(l))
             set_1 = set_1.union(set(l))
-
-    all_1.append(set_1)
-    all_2.append(set_2)
-
-    part1 = sum([len(i) for i in all_1])
-    part2 = sum([len(i) for i in all_2])
 
     # output
     duration = int((time.time() - start_time) * 1000)
