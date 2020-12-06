@@ -7,20 +7,16 @@ def passport_part2_valid(p):
     # byr
     if not (1920 <= int(p['byr']) <= 2020):
         return False
-
     # iyr
     if not (2010 <= int(p['iyr']) <= 2020):
         return False
-
     # eyr
     if not (2020 <= int(p['eyr']) <= 2030):
         return False
-
     # hcl
     match = re.search(r'^#(?:[0-9a-fA-F]{6})$', p['hcl'])
     if not match:
         return False
-
     # hgt
     if not ((p['hgt'].endswith('in') and 59 <= int(p['hgt'][:-2]) <= 76) or (p['hgt'].endswith('cm') and 150 <= int(p['hgt'][:-2]) <= 193)):
         return False
@@ -28,12 +24,10 @@ def passport_part2_valid(p):
     valid_ecl = {'amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'}
     if not (p['ecl'] in valid_ecl):
         return False
-
     # pid
     match_pid = re.search('^\d{9}$', p['pid'])
     if not match_pid:
         return False
-
     return True
 
 
@@ -77,10 +71,6 @@ def main():
     duration = int((time.time() - start_time) * 1000)
     print(
         f"\n{star_line}\n AoC 2020 - Day {day}\n{star_line}\n\nPart 1:\t\t{part1}\nPart 2:\t\t{part2}\nDuration:\t{duration} ms")
-
-    match = re.search('^\d{9}$', "00000000")
-    if match:
-        print("True")
 
 
 if __name__ == "__main__":
