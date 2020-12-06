@@ -8,7 +8,7 @@ def main():
 
     # input
     print(os.getcwd())
-    day = "05"
+    day = "06"
     part1, part2 = 0, 0
     star_line = "*" * 19
     inputFile = f'../inputs/input{day}.txt'
@@ -18,28 +18,25 @@ def main():
 
     start_time = time.time()
 
+    set_1, set_2 = set(), set("abcdefghijklmnopqrstuvwxyz")
+    all_1, all_2 = [], []
+
     # part 1
-    bp_min, bp_max = 1000, 0
-    bpp = 0
-
-    # def ones(x):
-    #     return int(x == 'R' or x == 'B')
-    ops = "".maketrans('FBLR', '0101')
-    
     for l in lines:
-        # bp = 0
-        # for i in l:
-        #     bp <<= 1
-        #     bp += ones(i)
-        
-        bp = int(l.translate(ops),2)
-        bp_max, bp_min = max(bp_max, bp), min(bp_min, bp)
-        bpp ^= bp
-    part1 = bp_max
+        if l == "":
+            all_1.append(set_1)
+            all_2.append(set_2)
+            set_1 = set()
+            set_2 = set("abcdefghijklmnopqrstuvwxyz")
+        else:
+            set_2 = set_2.intersection(set(l))
+            set_1 = set_1.union(set(l))
 
-    # part2
-    part2 = bpp ^ functools.reduce(
-        lambda x, y: x ^ y, [i for i in range(bp_min, bp_max+1)])
+    all_1.append(set_1)
+    all_2.append(set_2)
+
+    part1 = sum([len(i) for i in all_1])
+    part2 = sum([len(i) for i in all_2])
 
     # output
     duration = int((time.time() - start_time) * 1000)
