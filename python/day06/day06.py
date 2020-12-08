@@ -11,7 +11,7 @@ def main():
     day = "06"
     part1, part2 = 0, 0
     star_line = "*" * 19
-    inputFile = f'../inputs/input{day}.txt'
+    inputFile = f'inputs/input{day}.txt'
 
     with open(inputFile) as f:
         lines = f.read().splitlines()
