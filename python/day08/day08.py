@@ -2,35 +2,24 @@ import os
 import time
 import re
 import functools
+from collections import deque
 
 
-def exec_code(code) ->(int,int):
-    """ AoC2020 / Day 8: execute code
-    
-    Input:
-        Code compatible with AoC2020/8
-
-    Output:
-        (exit_code, acc)
-
-        exit_code:
-            0:  code terminated normally
-            -1: code runs into infinite loop
-
-        acc:
-            value of accumulator just before exiting
-    """
+def exec_code(code, debug = False):
+    """ exit code 0 = normal -1 = infinite loop"""
     acc, ip = 0, 0
     seen = set()
+    history = deque()
     while True:
         if ip >= len(code):
-            return (0, acc)
+            return (0, acc,history)
         elif ip in seen:
-            return (-1, acc)
+            return (-1, acc,history)
         else:
             seen.add(ip)
         op, arg = code[ip]
-
+        if debug:
+            history.appendleft((ip,(op,arg)))
         # nop
         if op == 0:
             ip += 1
@@ -59,23 +48,20 @@ def main():
     code = [(commands[l[:3]], int(l[3:])) for l in lines]
 
     # part1
-    _, part1 = exec_code(code)
+    _, part1,hist = exec_code(code, debug = True)
     
-
     # part2
-    for i, cmd in enumerate(code):
-        modCode = code.copy()
-        c, a = cmd
-        if c % 2 == 0:
-            modCode[i] = ((c+2) % 4, a)
-        else:
-            continue
-        return_code, a = exec_code(modCode)
-        if return_code == 0:
-            part2 = a
-            break
+    while hist:
+        i, (op,arg) = hist.popleft()
+        
+        if op%2 == 0:
+            modCode = code.copy()
+            modCode[i] = ((op+2) % 4,arg)
+            rt,a,_ = exec_code(modCode)
+            if rt == 0:
+                part2 = a
+                break
 
-    
     #output
     duration = int((time.time() - start_time) * 1000)
 
