@@ -1,8 +1,6 @@
 import os
 import time
-import re
-import functools
-from collections import deque
+#import timeit
 
 
 def sum_possible(target, nums):
@@ -20,13 +18,13 @@ def sum_possible(target, nums):
 
 
 def sum_subset(target, nums):
-    s, lo, hi = 0, 0, 0
-    while s != target and hi < len(nums):
-        if s < target:
-            s += nums[hi]
+    subset_sum, lo, hi = 0, 0, 0
+    while subset_sum != target and hi < len(nums):
+        if subset_sum < target:
+            subset_sum += nums[hi]
             hi += 1
         else:
-            s -= nums[lo]
+            subset_sum -= nums[lo]
             lo += 1
 
     rmin, rmax = min(nums[lo:hi]), max(nums[lo:hi])
@@ -45,6 +43,7 @@ def main():
     with open(inputFile) as f:
         lines = f.read().splitlines()
 
+    # preprocess data
     num_list = [int(i) for i in lines]
     pre_size = 25
     curr_list = num_list[:pre_size]
@@ -69,4 +68,5 @@ def main():
 
 
 if __name__ == "__main__":
+    #print(timeit.timeit(main,number=100))
     main()
