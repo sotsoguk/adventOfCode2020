@@ -6,6 +6,7 @@ from itertools import groupby
 from functools import reduce
 from operator import mul
 
+
 def main():
 
     # input
@@ -36,13 +37,12 @@ def main():
     num_choices = {0: 1, 1: 1, 2: 2, 3: 4, 4: 7, 5: 13}
     sub_choices = [num_choices[i] for i in group_lengths]
     part2 = reduce(mul, sub_choices, 1)
-   
+
     # output
     duration = int((time.time() - start_time) * 1000)
 
     print(
         f"\n{star_line}\n AoC 2020 - Day {day}\n{star_line}\n\nPart 1:\t\t{part1}\nPart 2:\t\t{part2}\nDuration:\t{duration} ms")
-    print(num_list[1:-1])
 
     # part2 dynamic programming
     # reachable = {0:1}
