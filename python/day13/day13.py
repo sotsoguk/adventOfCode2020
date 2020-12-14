@@ -1,12 +1,13 @@
 import os
 import time
-#import timeit
+import timeit
 from collections import Counter
 from itertools import groupby
 from functools import reduce
 from operator import mul
 import copy
 import sys
+from math import prod
 
 
 def part2_crt(input):
@@ -19,7 +20,16 @@ def part2_crt(input):
 
     return  sum((a*w) for a,w in zip(a,w)) % mm
     
+# no chinese remainder, simpler solution
 
+def part2_alt(input):
+    t, step = 0,1
+    for m,d in input:
+        while (t+d) % m != 0:
+            t += step
+        step *= m
+    
+    return t
 def main():
 
     # input
@@ -40,8 +50,11 @@ def main():
     
     # part 1 & 2
     idssorted = sorted(ids,key = lambda x:abs((target %x)-x))
-    part1 = abs(target%idssorted[0]-idssorted[0]) * idssorted[0]
-    part2 = part2_crt(ids2)
+    # pythonic :)
+    part1 = prod(sorted(map(lambda x: (abs(target%x[0] -x[0]),x[0]),ids2), key = lambda x:x[0])[0])
+    
+    #part1 = abs(target%idssorted[0]-idssorted[0]) * idssorted[0]
+    part2 = part2_alt(ids2)
     
     # output
     duration = int((time.time() - start_time) * 1000)
