@@ -21,10 +21,11 @@ def getBit(value, bit):
 
 def applyMask(value, mask):
     for i,b in enumerate(mask):
+        pos = len(mask)-1-i
         if b == '0':
-            value = clearBit(value,len(mask)-1-i)
+            value = clearBit(value,pos)
         elif b == '1':
-            value = setBit(value,len(mask)-1-i)
+            value = setBit(value,pos)
     return value
 
 def getAddressSpace(address, mask):
