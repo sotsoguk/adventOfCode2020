@@ -12,8 +12,7 @@ class Grid3d:
     
     def __init__(self,input):
         self.data = self.read_input(input)
-        self.xmin,self.xmax,self.ymin,self.ymax,self.zmin, self.zmax = 0,0,0,0,0,0
-        self.calc_boundary()
+        self.region = self.calc_region()
 
     def read_input(self,lines):
         g = set()
@@ -22,26 +21,25 @@ class Grid3d:
                 if cc == '#':
                     g.add((j,i,0))
         return g
+
     def count_active(self):
         return len(self.data)
 
-    def calc_boundary(self):
-        self.xmin = min(self.data, key = lambda x:x[0])[0]-1
-        self.xmax = max(self.data, key = lambda x:x[0])[0]+1
-        self.ymin = min(self.data, key = lambda x:x[1])[1]-1
-        self.ymax = max(self.data, key = lambda x:x[1])[1]+1
-        self.zmin = min(self.data, key = lambda x:x[2])[2]-1
-        self.zmax = max(self.data, key = lambda x:x[2])[2]+1
     
+    def calc_region(self):
+        region = set()
+        for p in self.data:
+            region.add(p)
+            region.update(self.get_n(p))
+        return region
+
     def get_n(self,p3d):
         xp, yp, zp = p3d
         return [(x,y,z) for x in range(xp-1,xp+2) for y in range(yp-1,yp+2) for z in range(zp-1,zp+2) if not (x== xp and y== yp and z== zp)]
 
     def do_step(self):
-        # region to compute
-        r = [(x,y,z) for x in range(self.xmin,self.xmax+1) for y in range(self.ymin,self.ymax+1) for z in range(self.zmin,self.zmax+1)]
         new_data = set()
-        for i in r:
+        for i in self.region:
             ns = self.get_n(i)
             active_ns = sum([1 for n in ns if n in self.data])
             if i in self.data and 2<=active_ns<=3:
@@ -49,14 +47,14 @@ class Grid3d:
             if (i not in self.data) and active_ns == 3:
                 new_data.add(i)
         self.data = new_data        
-        self.calc_boundary()
+        self.region = self.calc_region()
 
 class Grid4d:
     
     def __init__(self,input):
         self.data = self.read_input(input)
         self.xmin,self.xmax,self.ymin,self.ymax,self.zmin, self.zmax, self.wmin,self.wmax = 0,0,0,0,0,0,0,0
-        self.calc_boundary()
+        self.region = self.calc_region()
 
     def read_input(self,lines):
         g = set()
@@ -69,25 +67,20 @@ class Grid4d:
     def count_active(self):
         return len(self.data)
 
-    def calc_boundary(self):
-        self.xmin = min(self.data, key = lambda x:x[0])[0]-1
-        self.xmax = max(self.data, key = lambda x:x[0])[0]+1
-        self.ymin = min(self.data, key = lambda x:x[1])[1]-1
-        self.ymax = max(self.data, key = lambda x:x[1])[1]+1
-        self.zmin = min(self.data, key = lambda x:x[2])[2]-1
-        self.zmax = max(self.data, key = lambda x:x[2])[2]+1
-        self.wmin = min(self.data, key = lambda x:x[3])[3]-1
-        self.wmax = max(self.data, key = lambda x:x[3])[3]+1
-    
+    def calc_region(self):
+        region = set()
+        for p in self.data:
+            region.add(p)
+            region.update(self.get_n(p))
+        return region
     def get_n(self,p4d):
         xp, yp, zp,wp = p4d
         return [(x,y,z,w) for x in range(xp-1,xp+2) for y in range(yp-1,yp+2) for z in range(zp-1,zp+2) for w in range(wp-1,wp+2) if not (x== xp and y== yp and z== zp and w==wp)]
 
     def do_step(self):
-        # region to compute
-        r = [(x,y,z,w) for x in range(self.xmin,self.xmax+1) for y in range(self.ymin,self.ymax+1) for z in range(self.zmin,self.zmax+1) for w in range(self.wmin,self.wmax+1)]
+        
         new_data = set()
-        for i in r:
+        for i in self.region:
             ns = self.get_n(i)
             active_ns = sum([1 for n in ns if n in self.data])
             if i in self.data and 2<=active_ns<=3:
@@ -95,7 +88,7 @@ class Grid4d:
             if (i not in self.data) and active_ns == 3:
                 new_data.add(i)
         self.data = new_data        
-        self.calc_boundary()
+        self.region = self.calc_region()
 
 
 def main():
@@ -116,11 +109,13 @@ def main():
     g3d = Grid3d(lines)
     g4d = Grid4d(lines)
 
+    # print(g3d.region)
     for _ in range(boot_process):
         g3d.do_step()
         g4d.do_step()
 
-    part1, part2 = g3d.count_active(), g4d.count_active()
+    part1 = g3d.count_active()
+    part2 = g4d.count_active()
     # output
     duration = int((time.time() - start_time) * 1000)
     print(
