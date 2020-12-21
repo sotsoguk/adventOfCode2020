@@ -12,7 +12,8 @@ import re
 def check_cfg(rules, rule_nr, word, pos):
     rule = rules[rule_nr]
     # if rule is terminal (starts with a "")
-    if rule[0][0][0] == '"':
+    # if rule[0][0][0] == '"':
+    if not rule[0][0].isnumeric():
         if pos < len(word) and word[pos] == rule[0][0][1]:
             return {pos+1}
         else:
@@ -36,7 +37,7 @@ def main():
     # input
     print(os.getcwd())
     print(sys.version)
-    day = "19"
+    day = "19d"
     part1, part2 = 0, 0
     star_line = "*" * 19
     inputFile = f'inputs/input{day}.txt'
@@ -52,10 +53,13 @@ def main():
     for line in lines_rules:
         toks = line.split(': ')
         rule_nr = toks[0]
-        rule = [s.split(' ') for s in toks[1].split(' | ')]
-        rules[rule_nr] = rule
+        # rule = [s.split(' ') for s in toks[1].split(' | ')]
+        rule = [[int(j) if j.isnumeric() else j  for s in toks[1].split(' | ')] for j in s.split(' ')]
+        # rul2 = [int (j) if j.isnumeric() else j for b in rule for j in b]
+        print(rule)
+        rules[int(rule_nr)] = rule
 
-    # print(rules)
+    print(rules)
     # messages received
     messages = inp[1].splitlines()
     # print(messages)
@@ -64,15 +68,15 @@ def main():
 
     # part1 & 2
 
-    results = [len(word) in check_cfg(rules,'0',word,0) for word in messages]
+    results = [len(word) in check_cfg(rules,0,word,0) for word in messages]
     part1 = results.count(True)
 
     # part2
-    rules['8'] = [['42'],['42','8']]
-    rules['11'] = [['42','31'],['42','11','31']]
+    # rules['8'] = [['42'],['42','8']]
+    # rules['11'] = [['42','31'],['42','11','31']]
 
-    results = [len(word) in check_cfg(rules,'0',word,0) for word in messages]
-    part2 = results.count(True)
+    # results = [len(word) in check_cfg(rules,'0',word,0) for word in messages]
+    # part2 = results.count(True)
     # output
     duration = int((time.time() - start_time) * 1000)
     print(
