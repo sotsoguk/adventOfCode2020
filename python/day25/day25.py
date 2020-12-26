@@ -24,34 +24,34 @@ def main():
     modv = 20201227
     sn = 7
     # loop size 1
-    # cnt1 = 1
-    # v = 1
-    # while True:
-    #     v *= sn
-    #     v %= modv
-    #     if v == i1:
-    #         break
-    #     cnt1 += 1
-    #     # print(cnt1)
-    # print('l1',cnt1)
-
-    # cnt2 = 1
-    # v = 1
-    # while True:
-    #     v *= sn
-    #     v %= modv
-    #     if v == i2:
-    #         break
-    #     cnt2 += 1
-    #     # print(cnt1)
-    # print('l2',cnt2)
-    # compute encryption key
-    sn = i1
+    cnt1 = 1
     v = 1
-    for i in range(l2):
+    while True:
         v *= sn
         v %= modv
-    print(v)
+        if v == i1:
+            break
+        cnt1 += 1
+        # print(cnt1)
+    print('l1',cnt1)
+
+    cnt2 = 1
+    v = 1
+    while True:
+        v *= sn
+        v %= modv
+        if v == i2:
+            break
+        cnt2 += 1
+        # print(cnt1)
+    print('l2',cnt2)
+    # compute encryption key
+    # sn = i1
+    # v = 1
+    # for i in range(l2):
+    #     v *= sn
+    #     v %= modv
+    # print(v)
 
     duration = int((time.time() - start_time) * 1000)
     print(
