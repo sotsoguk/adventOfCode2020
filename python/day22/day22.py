@@ -14,6 +14,8 @@ def eval_deck(deck):
 
 
 def play_game_rec(p1, p2, game_id):
+    if max(p1) > max(p2) and game_id > 1:
+        return 1
     counter = game_id + 1
     seen = set()
     while (len(p1) * len(p2) > 0):
